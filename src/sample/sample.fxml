@@ -1,0 +1,13 @@
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.canvas.Canvas?>
+<?import javafx.scene.control.Button?>
+
+<BorderPane fx:controller="sample.Controller" xmlns:fx="http://javafx.com/fxml">
+    <center>
+        <Canvas fx:id="canvas" onMouseClicked="#mouseClickedCanvas" onMouseDragged="#mouseClickedCanvas"/>
+    </center>
+
+    <bottom>
+        <Button text="clear" onMouseClicked="#mouseClickedButtonClear"/>
+    </bottom>
+</BorderPane>
