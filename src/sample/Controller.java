@@ -7,6 +7,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.util.Duration;
@@ -25,7 +26,6 @@ public class Controller implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         int cw = 500, ch = 500, ps=10;
-
         init_canvas(cw,ch);
         init_particle_system(cw/ps);
         init_game_clock();
@@ -45,11 +45,13 @@ public class Controller implements Initializable {
     private void init_game_clock() {
         gameclock = new Timeline(new KeyFrame(Duration.seconds(1/60f), event -> {
             long t0 = System.nanoTime();
+
             system.run(1/60f);
+            system.setYAt(1,20,20);
+            system.setXAt(1,20,20);
             draw();
 
             currentTick = ((System.nanoTime() - t0) / 1e9);
-            System.out.println("==> " + currentTick);
         }));
 
 
@@ -58,7 +60,7 @@ public class Controller implements Initializable {
     }
 
     private void init_status() {
-        Random rnd = new Random();
+
     }
 
     private void draw() {
@@ -79,7 +81,13 @@ public class Controller implements Initializable {
     public void mouseClickedCanvas(MouseEvent e) {
         int unit_x = (int) (e.getX() / 10);
         int unit_y = (int) (e.getY() / 10);
+        Random rnd = new Random();
 
-        system.setParticleAt(1, unit_x, unit_y);
+        if(e.getButton() == MouseButton.PRIMARY) {
+            system.setParticleAt(1, unit_x, unit_y);
+        } else if(e.getButton() == MouseButton.SECONDARY) {
+            system.setYAt((rnd.nextBoolean() ? -1 : 1) * 0.7, unit_x, unit_y);
+            system.setXAt((rnd.nextBoolean() ? -1 : 1) * 0.5, unit_x, unit_y);
+        }
     }
 }
